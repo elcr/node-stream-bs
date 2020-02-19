@@ -1,16 +1,30 @@
+type readable;
+type writeable;
+
+
 module Readable = {
-    type t;
+    type t = readable;
 
     [@bs.send.pipe: t]
     external on: ([@bs.string] [
         | `ready((unit => unit))
         | `error((Js.Exn.t => unit))
     ]) => unit = "on";
+
+    [@bs.send.pipe: t]
+    external pipe: writeable => unit = "pipe";
 };
 
 
 module Writeable = {
-    type t;
+    type t = writeable;
 
-    external toReadable: t => Readable.t = "%identity";
+    [@bs.send.pipe: t]
+    external on: ([@bs.string] [
+        | `ready((unit => unit))
+        | `error((Js.Exn.t => unit))
+        | `close((unit => unit))
+    ]) => unit = "on";
+
+    external toReadable: t => readable = "%identity";
 };
