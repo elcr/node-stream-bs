@@ -28,6 +28,4 @@ module Writeable = {
 
     [@bs.send.pipe: t]
     external end_: (~chunk: string, ~encoding: string) => unit = "end";
-
-    external toReadable: t => readable = "%identity";
 };
